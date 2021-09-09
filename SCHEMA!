@@ -1,0 +1,38 @@
+DROP TABLE IF EXISTS card_holder CASCADE;
+DROP TABLE IF EXISTS credit_card CASCADE;
+DROP TABLE IF EXISTS merchant_category CASCADE;
+DROP TABLE IF EXISTS merchant CASCADE;
+DROP TABLE IF EXISTS transactions CASCADE;
+
+Create TABLE card_holder(
+	card_holder_id INT Primary KEY NOT NULL,
+	full_name VARCHAR(45)
+);
+
+CREATE TABLE credit_card(
+	card VARCHAR(45),
+	card_holder_id INT NOT NULL,
+	FOREIGN KEY (card_holder_id)references card_holder(card_holder_id)
+);
+	
+
+CREATE TABLE merchant_category(
+	merchant_category_id INT Primary key NOT NULL,
+	category_name VARCHAR(45)
+);
+
+CREATE TABLE merchant(
+	merchant_id INT Primary key NOT NULL,
+	merchant_name VARCHAR(45),
+	merchant_category_id INT NOT NULL,
+	FOREIGN KEY (merchant_category_id)references merchant_category(merchant_category_id)
+);
+
+CREATE TABLE transactions(
+	card_holder_id INT NOT NULL,
+	date timestamp without time zone DEFAULT now() not null,
+	amount NUMERIC(45,2),
+	card VARCHAR(45),
+	merchant_id INT NOT NULL,
+	FOREIGN KEY (merchant_id)references merchant(merchant_id)
+);
