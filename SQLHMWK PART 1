@@ -1,0 +1,44 @@
+SELECT (card_holder_id) FROM card_holder;
+SELECT (date) from transactions;
+SELECT (amount) from transactions
+
+JOIN card_holder USING (date, amount)
+Select date, amount from transactions join card_holder using (card_holder_id)
+SELECT * FROM card_holder WHERE card_holder_id = 2 OR card_holder_id = 18;
+
+SELECT * FROM transactions as t
+JOIN credit_card as cc ON t.card = cc.card
+WHERE cc.card_holder_id = 2 OR cc.card_holder_id = 18;
+
+SELECT date, amount, cc.card_holder_id FROM transactions as t
+JOIN credit_card as cc ON t.card = cc.card
+WHERE cc.card_holder_id = 25
+AND date > date('01/01/2018')
+AND date < date('01/06/2018')
+SELECT date_part('month', t.date) AS month, date_part('day', t.date) as day, t.amount
+        FROM transactions AS t
+        JOIN credit_card AS cc ON cc.card = t.card
+        JOIN card_holder AS ch ON ch.card_holder_id = cc.card_holder_id
+        WHERE ch.card_holder_id = 25 AND date_part('month', t.date) <= 6
+        ORDER BY month,day
+
+
+--isolate or group transactions for each cardholder
+
+SELECT card_holder_id from card_holder; 
+SELECT card_holder_id, date, amount from transactions join card_holder USING (card_holder_id)
+GROUP BY card_holder_id, date, amount
+ORDER BY card_holder_id
+
+--top 100 transactions between 7am and 9am 
+
+SELECT * from transactions
+Where date::time>= '07:00:00'
+And date::time <= '09:00:00'
+Order by amount Desc
+Limit 100; 
+
+--Is there a higher number of fraudulent transactions made during this time frame versus the rest of the day?
+--Answer: Not sure if there are a higher number of fraudulent transactions betwen 7am and 9am
+
+--
